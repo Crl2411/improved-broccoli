@@ -1,0 +1,20 @@
+{
+  "staging": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-amplify45e4ee59a8354-staging-164757-authRole",
+      "UnauthRoleArn": "arn:aws:iam::014054262417:role/amplify-amplify45e4ee59a8354-staging-164757-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::014054262417:role/amplify-amplify45e4ee59a8354-staging-164757-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-amplify45e4ee59a8354-staging-164757-deployment",
+      "UnauthRoleName": "amplify-amplify45e4ee59a8354-staging-164757-unauthRole",
+      "StackName": "amplify-amplify45e4ee59a8354-staging-164757",
+      "StackId": "arn:aws:cloudformation:us-east-1:014054262417:stack/amplify-amplify45e4ee59a8354-staging-164757/2fb19e00-9d99-11ed-86ca-0a12cff655fd",
+      "AmplifyAppId": "d1nfxo6y84ektg"
+    },
+    "categories": {
+      "auth": {
+        "improvedbroccoli0189cc4d": {}
+      }
+    }
+  }
+}
