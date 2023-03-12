@@ -26,10 +26,7 @@ const App = ({ signOut }) => {
 
   useEffect(() => {
     fetchNotes();
-  }, []);
-
-  useEffect(() => {
-    fetchPrivateNotes();
+	fetchPrivateNotes();
   }, []);
 
 async function fetchNotes() {
@@ -48,7 +45,7 @@ async function fetchNotes() {
 }
 
 async function fetchPrivateNotes() {
-  const apiData = await API.graphql({ query: listPrivateNotes });
+  const apiData = await API.graphql({ query: listPrivateNotes, authMode: 'AMAZON_COGNITO_USER_POOLS' });
   const notesFromAPI = apiData.data.listNotes.items;
   await Promise.all(
 	notesFromAPI.map(async (note) => {

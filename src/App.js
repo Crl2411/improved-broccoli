@@ -30,7 +30,7 @@ const App = ({ signOut }) => {
   }, []);
 
 async function fetchNotes() {
-  const apiData = await API.graphql({ query: listNotes });
+  const apiData = await API.graphql({ query: listNotes, authMode: 'API_KEY'  });
   const notesFromAPI = apiData.data.listNotes.items;
   await Promise.all(
 	notesFromAPI.map(async (note) => {
@@ -45,7 +45,7 @@ async function fetchNotes() {
 }
 
 async function fetchPrivateNotes() {
-  const apiData = await API.graphql({ query: listPrivateNotes });
+  const apiData = await API.graphql({ query: listPrivateNotes, authMode: 'AMAZON_COGNITO_USER_POOLS' });
   const notesFromAPI = apiData.data.listNotes.items;
   await Promise.all(
 	notesFromAPI.map(async (note) => {
