@@ -32,3 +32,36 @@ export const listNotes = /* GraphQL */ `
     }
   }
 `;
+export const getPrivateNote = /* GraphQL */ `
+  query GetPrivateNote($id: ID!) {
+    getPrivateNote(id: $id) {
+      id
+      name
+      description
+      image
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const listPrivateNotes = /* GraphQL */ `
+  query ListPrivateNotes(
+    $filter: ModelPrivateNoteFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listPrivateNotes(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        name
+        description
+        image
+        createdAt
+        updatedAt
+        owner
+      }
+      nextToken
+    }
+  }
+`;
