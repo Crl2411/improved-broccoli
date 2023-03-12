@@ -23,6 +23,7 @@ import {
 
 const App = ({ signOut }) => {
   const [notes, setNotes] = useState([]);
+  const [PrivateNotes, setPrivateNotes] = useState([]);
 
   useEffect(() => {
     fetchNotes();
@@ -46,17 +47,17 @@ async function fetchNotes() {
 
 async function fetchPrivateNotes() {
   const apiData = await API.graphql({ query: listPrivateNotes, authMode: 'AMAZON_COGNITO_USER_POOLS' });
-  const notesFromAPI = apiData.data.listNotes.items;
+  const notesFromAPI = apiData.data.listPrivateNotes.items;
   await Promise.all(
-	notesFromAPI.map(async (note) => {
-	  if (note.image) {
-		const url = await Storage.get(note.name);
-		note.image = url;
+	notesFromAPI.map(async (PrivateNote) => {
+	  if (PrivateNote.image) {
+		const url = await Storage.get(PrivateNote.name);
+		PrivateNote.image = url;
 	  }
-	  return note;
+	  return PrivateNote;
 	})
   );
-  setNotes(notesFromAPI);
+  setPrivateNotes(notesFromAPI);
 }
 
 async function createNote(event) {
@@ -106,8 +107,8 @@ async function deleteNote({ id, name }) {
 }
 
 async function deletePrivateNote({ id, name }) {
-  const newNotes = notes.filter((note) => note.id !== id);
-  setNotes(newNotes);
+  const newNotes = PrivateNotes.filter((PrivateNote) => PrivateNote.id !== id);
+  setPrivateNotes(newNotes);
   await Storage.remove(name);
   await API.graphql({
     query: deletePrivateNoteMutation,
@@ -198,6 +199,32 @@ async function deletePrivateNote({ id, name }) {
 			  />
 			)}
 			<Button variation="link" onClick={() => deleteNote(note)}>
+			  Delete note
+			</Button>
+		  </Flex>
+		))}
+      </View>
+	  <Heading level={3}>Current Private Notes</Heading>
+      <View margin="3rem 0">
+		 {PrivateNotes.map((PrivateNote) => (
+		  <Flex
+			key={PrivateNote.id || PrivateNote.name}
+			direction="row"
+			justifyContent="center"
+			alignItems="center"
+		  >
+			<Text as="strong" fontWeight={700}>
+			  {PrivateNote.name}
+			</Text>
+			<Text as="span">{PrivateNote.description}</Text>
+			{PrivateNote.image && (
+			  <Image
+				src={PrivateNote.image}
+				alt={`visual aid for ${notes.name}`}
+				style={{ width: 400 }}
+			  />
+			)}
+			<Button variation="link" onClick={() => deletePrivateNote(PrivateNote)}>
 			  Delete note
 			</Button>
 		  </Flex>

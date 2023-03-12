@@ -30,7 +30,7 @@ const App = ({ signOut }) => {
   }, []);
 
 async function fetchNotes() {
-  const apiData = await API.graphql({ query: listNotes });
+  const apiData = await API.graphql({ query: listNotes, authMode: 'API_KEY'  });
   const notesFromAPI = apiData.data.listNotes.items;
   await Promise.all(
 	notesFromAPI.map(async (note) => {
