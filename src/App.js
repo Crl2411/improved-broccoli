@@ -26,10 +26,7 @@ const App = ({ signOut }) => {
 
   useEffect(() => {
     fetchNotes();
-  }, []);
-
-  useEffect(() => {
-    fetchPrivateNotes();
+	fetchPrivateNotes();
   }, []);
 
 async function fetchNotes() {
