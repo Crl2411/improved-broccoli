@@ -91,6 +91,7 @@ async function createPrivateNote(event) {
   await API.graphql({
     query: createPrivateNoteMutation,
     variables: { input: data },
+	authMode: 'AMAZON_COGNITO_USER_POOLS'
   });
   fetchPrivateNotes();
   event.target.reset();
@@ -113,6 +114,7 @@ async function deletePrivateNote({ id, name }) {
   await API.graphql({
     query: deletePrivateNoteMutation,
     variables: { input: { id } },
+	authMode: 'AMAZON_COGNITO_USER_POOLS'
   });
 }
 
