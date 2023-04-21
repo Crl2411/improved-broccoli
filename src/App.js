@@ -148,7 +148,7 @@ async function deletePrivateNote({ id, name }) {
           </Button>
         </Flex>
       </View>
-	  <Heading level={2}>My Private Notes App</Heading>
+	  <Heading level={1}>My Private Notes App</Heading>
       <View as="form" margin="3rem 0" onSubmit={createPrivateNote}>
         <Flex direction="row" justifyContent="center">
           <TextField
