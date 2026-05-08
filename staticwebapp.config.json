@@ -3,7 +3,7 @@
   "routes": [
     {
       "route": "/login",
-      "rewrite": "/.auth/login/aap"
+      "rewrite": "/.auth/login/aad"
     },
     {
       "route": "/.auth/login/x",
