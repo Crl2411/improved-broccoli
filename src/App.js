@@ -68,7 +68,7 @@ function App() {
           </a>
         </header>
       </div>
-  //    </AuthProvider>
+    </AuthProvider>
   );
 }
 
