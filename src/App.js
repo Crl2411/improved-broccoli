@@ -1,9 +1,9 @@
 import logo from './logo.svg';
 import './App.css';
-//import { createContext, useContext, useState } from 'react';
-import { useState } from 'react';
+import { createContext, useContext, useState } from 'react';
+//import { useState } from 'react';
 
-/* const AuthContext = createContext();
+const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -42,19 +42,19 @@ function AunthenticationToggle({ isAuthenticated, toggleAuth }) {
       {isAuthenticated ? 'Logout' : 'Login'}
     </button>
   );
-} */
+}
 
 function App() {
   const [displayText] = useState('Learn React');
-  //const {isAuthenticated, toggleAuth} = useContext(AuthContext);
+  const {isAuthenticated, toggleAuth} = useContext(AuthContext);
 
   return (
-    //<AuthProvider>
+    <AuthProvider>
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          {/* <TextUpdateWhenAuthenticated />
-          <AunthenticationToggle isAuthenticated={isAuthenticated} toggleAuth={toggleAuth} /> */}
+          <TextUpdateWhenAuthenticated />
+          <AunthenticationToggle isAuthenticated={isAuthenticated} toggleAuth={toggleAuth} />
           <p>
             Edit <code>src/App.js</code> and save to reload.
           </p>
