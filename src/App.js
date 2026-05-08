@@ -7,7 +7,7 @@ const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const toggleAuth = () => {
-    setIsAuthenticated((prev) => prev ? window.location.href = '/login' : window.location.href = '/logout');
+    setIsAuthenticated((prev) => prev ? window.location.href = '/logout' : window.location.href = '/login');
   };
 
   return (
@@ -16,6 +16,24 @@ const AuthProvider = ({ children }) => {
     </AuthContext.Provider>
   );
 };
+
+function TextUpdateWhenAuthenticated() {
+  const { isAuthenticated } = useContext(AuthContext);
+  const [inputText, setInputText] = useState('');
+  const [displayText, setDisplayText] = useState('Learn React');
+
+  return (
+    <div>
+      {isAuthenticated && (
+        <>
+          <input type="text" value={inputText} onChange={(e) => setInputText(e.target.value)} />
+          <button onClick={() => setDisplayText(inputText)}>Update Text</button>
+        </>
+      )}
+      <p>{displayText}</p>
+    </div>
+  );
+}
 
 
 function App() {
@@ -33,10 +51,8 @@ function App() {
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          {isAuthenticated && (
-          <input type="text" value={inputText} onChange={(e) => setInputText(e.target.value)} />)}
-          {isAuthenticated && (
-          <button onClick={() => setDisplayText(inputText)}>Update Text</button>)}
+          <TextUpdateWhenAuthenticated />
+          <AunthenticationToggle isAuthenticated={isAuthenticated} toggleAuth={handleAuthToggle} />
           <button onClick={handleAuthToggle}>{isAuthenticated ? 'Logout' : 'Login'}</button>
           <p>
             Edit <code>src/App.js</code> and save to reload.
