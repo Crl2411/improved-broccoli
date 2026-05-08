@@ -8,7 +8,15 @@ const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const toggleAuth = () => {
-    setIsAuthenticated((prev) => prev ? window.location.href = '/logout' : window.location.href = '/login');
+    setIsAuthenticated((prev) => {
+      if (prev){
+        window.location.href = '/logout';
+        prev = false;
+      } else {
+        window.location.href = '/login';
+        prev = true;
+      }
+    });
   };
 
   return (
