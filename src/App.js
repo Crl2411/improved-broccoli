@@ -35,16 +35,18 @@ function TextUpdateWhenAuthenticated() {
   );
 }
 
+function AunthenticationToggle({ isAuthenticated, toggleAuth }) {
+  return (
+    <button onClick={toggleAuth}>
+      {isAuthenticated ? 'Logout' : 'Login'}
+    </button>
+  );
+}
 
 function App() {
   const [inputText, setInputText] = useState('');
   const [displayText, setDisplayText] = useState('Learn React');
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  const handleAuthToggle = () => {
-    
-    setIsAuthenticated((prev) => !prev);
-  };
+  const {isAuthenticated, toggleAuth} = useContext(AuthContext);
 
   return (
     <AuthProvider>
