@@ -35,13 +35,6 @@ function TextUpdateWhenAuthenticated() {
   );
 }
 
-function AunthenticationToggle({ isAuthenticated, toggleAuth }) {
-  return (
-    <button onClick={toggleAuth}>
-      {isAuthenticated ? 'Logout' : 'Login'}
-    </button>
-  );
-}
 
 function App() {
   const [inputText, setInputText] = useState('');
