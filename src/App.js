@@ -12,6 +12,7 @@ function App() {
         <img src={logo} className="App-logo" alt="logo" />
         <input type="text" value={inputText} onChange={(e) => setInputText(e.target.value)} />
         <button onClick={() => setDisplayText(inputText)}>Update Text</button>
+        <button onClick={() => (window.location.href = '/login')}>Login</button>
         <p>
           Edit <code>src/App.js</code> and save to reload.
         </p>
