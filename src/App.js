@@ -36,7 +36,8 @@ function TextUpdateWhenAuthenticated() {
   );
 }
 
-function AunthenticationToggle({ isAuthenticated, toggleAuth }) {
+function AuthenticationToggle() {
+  const { isAuthenticated, toggleAuth } = useContext(AuthContext);
   return (
     <button onClick={toggleAuth}>
       {isAuthenticated ? 'Logout' : 'Login'}
@@ -45,16 +46,13 @@ function AunthenticationToggle({ isAuthenticated, toggleAuth }) {
 }
 
 function App() {
-  const [displayText] = useState('Learn React');
-  const {isAuthenticated, toggleAuth} = useContext(AuthContext);
-
   return (
     <AuthProvider>
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <TextUpdateWhenAuthenticated />
-          <AunthenticationToggle isAuthenticated={isAuthenticated} toggleAuth={toggleAuth} />
+          <AuthenticationToggle />
           <p>
             Edit <code>src/App.js</code> and save to reload.
           </p>
@@ -64,7 +62,7 @@ function App() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            {displayText}
+            Learn React
           </a>
         </header>
       </div>
