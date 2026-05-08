@@ -12,10 +12,6 @@
     {
       "route": "/logout",
       "redirect": "/.auth/logout"
-    },
-    {
-      "route": "/calendar*",
-      "rewrite": "/calendar.html"
     }
   ],
   "responseOverrides": {

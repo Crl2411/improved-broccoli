@@ -5,14 +5,21 @@ import { useState } from 'react';
 function App() {
   const [inputText, setInputText] = useState('');
   const [displayText, setDisplayText] = useState('Learn React');
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  const handleAuthToggle = () => {
+    setIsAuthenticated((prev) => !prev);
+  };
 
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <input type="text" value={inputText} onChange={(e) => setInputText(e.target.value)} />
-        <button onClick={() => setDisplayText(inputText)}>Update Text</button>
-        <button onClick={() => (window.location.href = '/login')}>Login</button>
+        {isAuthenticated && (
+          <button onClick={() => setDisplayText(inputText)}>Update Text</button>
+        )}
+        <button onClick={handleAuthToggle}>{isAuthenticated ? 'Logout' : 'Login'}</button>
         <p>
           Edit <code>src/App.js</code> and save to reload.
         </p>
