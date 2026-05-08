@@ -35,6 +35,13 @@ function TextUpdateWhenAuthenticated() {
   );
 }
 
+function AunthenticationToggle({ isAuthenticated, toggleAuth }) {
+  return (
+    <button onClick={toggleAuth}>
+      {isAuthenticated ? 'Logout' : 'Login'}
+    </button>
+  );
+}
 
 function App() {
   const [inputText, setInputText] = useState('');
@@ -52,8 +59,7 @@ function App() {
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <TextUpdateWhenAuthenticated />
-          <AunthenticationToggle isAuthenticated={isAuthenticated} toggleAuth={handleAuthToggle} />
-          <button onClick={handleAuthToggle}>{isAuthenticated ? 'Logout' : 'Login'}</button>
+          <AunthenticationToggle isAuthenticated={isAuthenticated} toggleAuth={toggleAuth} />
           <p>
             Edit <code>src/App.js</code> and save to reload.
           </p>
