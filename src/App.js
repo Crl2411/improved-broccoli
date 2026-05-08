@@ -44,8 +44,7 @@ function AunthenticationToggle({ isAuthenticated, toggleAuth }) {
 }
 
 function App() {
-  const [inputText, setInputText] = useState('');
-  const [displayText, setDisplayText] = useState('Learn React');
+  const [displayText] = useState('Learn React');
   const {isAuthenticated, toggleAuth} = useContext(AuthContext);
 
   return (
