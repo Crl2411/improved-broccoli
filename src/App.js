@@ -1,7 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
-import { createContext, useContext, useState } from 'react';
-//import { useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 
 const AuthContext = createContext();
 
@@ -9,13 +8,12 @@ const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const toggleAuth = () => {
     setIsAuthenticated((prev) => {
-      if (prev){
+      if (prev) {
         window.location.href = '/logout';
-        prev = false;
-      } else {
-        window.location.href = '/login';
-        prev = true;
+        return false;
       }
+      window.location.href = '/login';
+      return true;
     });
   };
 
@@ -44,6 +42,55 @@ function TextUpdateWhenAuthenticated() {
   );
 }
 
+function DatabaseData() {
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    fetch('/api/items')
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`API request failed: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setItems(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError(err.message);
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading) {
+    return <p>Loading database items…</p>;
+  }
+
+  if (error) {
+    return <p>Error loading items: {error}</p>;
+  }
+
+  return (
+    <div>
+      <h2>Database Items</h2>
+      <ul>
+        {items.length > 0 ? (
+          items.map((item) => (
+            <li key={item.id}>
+              <strong>{item.name}</strong>: {item.value}
+            </li>
+          ))
+        ) : (
+          <li>No items found.</li>
+        )}
+      </ul>
+    </div>
+  );
+}
+
 function AuthenticationToggle() {
   const { isAuthenticated, toggleAuth } = useContext(AuthContext);
   return (
@@ -61,6 +108,7 @@ function App() {
           <img src={logo} className="App-logo" alt="logo" />
           <TextUpdateWhenAuthenticated />
           <AuthenticationToggle />
+          <DatabaseData />
           <p>
             Edit <code>src/App.js</code> and save to reload.
           </p>
