@@ -6,7 +6,7 @@ import pyodbc
 
 
 def get_connection():
-    conn_str = os.environ.get('Driver={ODBC Driver 18 for SQL Server};Server=tcp:example-database.database.windows.net,1433;Database=example_database;Uid={your_user_name};Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;Authentication=ActiveDirectoryIntegrated')
+    conn_str = os.environ.get('SQL_CONNECTION_STRING')
     if not conn_str:
         raise ValueError('Missing SQL_CONNECTION_STRING environment variable')
     return pyodbc.connect(conn_str, autocommit=True)
