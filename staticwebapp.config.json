@@ -2,6 +2,10 @@
   "trailingSlash": "auto",
   "routes": [
     {
+      "route": "/api/*",
+      "allowedRoles": ["authenticated", "anonymous"]
+    },
+    {
       "route": "/login",
       "rewrite": "/.auth/login/aad"
     },
