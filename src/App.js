@@ -48,7 +48,7 @@ function DatabaseData() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch('/api/get_items')
+    fetch('/api/items')
       .then((response) => {
         if (!response.ok) {
           throw new Error(`API request failed: ${response.status}`);
