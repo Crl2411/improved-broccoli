@@ -155,7 +155,7 @@ function NewMessage() {
   
   useEffect(() => {
     (async function () {
-      const text = await( await fetch(`/api/new_message`)).charset;
+      const text = await( await fetch(`/api/new_message`)).get_body().text();
       setData(text);
     })();
   });
