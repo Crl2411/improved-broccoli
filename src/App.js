@@ -150,6 +150,24 @@ function CheckHealth() {
 }
 
 
+function NewMessage() {
+  const [data, setData] = useState('');
+  
+  useEffect(() => {
+    (async function () {
+      const { text } = await( await fetch(`/api/message`)).json();
+      setData(text);
+    })();
+  });
+
+  return (<div>
+      <h2>Message from API:</h2>
+      <p>{data}</p>
+    </div>
+  );
+
+}
+
 function App() {
   return (
     <AuthProvider>
@@ -160,6 +178,7 @@ function App() {
           <AuthenticationToggle />
           <CheckHealth />
           <DatabaseData />
+          <NewMessage />
           <p>
             Edit <code>src/App.js</code> and save to reload.
           </p>
