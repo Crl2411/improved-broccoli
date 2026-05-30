@@ -48,7 +48,7 @@ function DatabaseData() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch('/api/items')
+    fetch('/api/get_items')
       .then((response) => {
         if (!response.ok) {
           throw new Error(`API request failed: ${response.status}`);
@@ -100,6 +100,56 @@ function AuthenticationToggle() {
   );
 }
 
+function CheckHealth() {
+  const [health, setHealth] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    fetch('/api/get_health')
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`API request failed: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setHealth(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError(err.message);
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading) {
+    return <p>Loading health data…</p>;
+  }
+
+  if (error) {
+    return <p>Error loading health data: {error}</p>;
+  }
+
+  return (
+    <div>
+      <h2>Health Data</h2>
+      <ul>
+        {health.length > 0 ? (
+          health.map((item) => (
+            <li key={item.status}>
+              <strong>{item.status}</strong>: {item.status}
+            </li>
+          ))
+        ) : (
+          <li>No health data found.</li>
+        )}
+      </ul>
+    </div>
+  );
+}
+
+
 function App() {
   return (
     <AuthProvider>
@@ -108,6 +158,7 @@ function App() {
           <img src={logo} className="App-logo" alt="logo" />
           <TextUpdateWhenAuthenticated />
           <AuthenticationToggle />
+          <CheckHealth />
           <DatabaseData />
           <p>
             Edit <code>src/App.js</code> and save to reload.
