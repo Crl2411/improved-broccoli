@@ -106,7 +106,7 @@ function CheckHealth() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch('/api/get_health')
+    fetch('/api/health')
       .then((response) => {
         if (!response.ok) {
           throw new Error(`API request failed: ${response.status}`);
