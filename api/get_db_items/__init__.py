@@ -3,20 +3,29 @@ import os
 import traceback
 
 import azure.functions as func
-import pyodbc
+import pymssql
 
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
     try:
-        conn_str = os.environ.get('SQL_CONNECTION_STRING')
-        if not conn_str:
+        server = os.environ.get('SQL_SERVER')
+        user = os.environ.get('SQL_USER')
+        password = os.environ.get('SQL_PASSWORD')
+        database = os.environ.get('SQL_DATABASE')
+
+        if not all([server, user, password, database]):
             return func.HttpResponse(
-                json.dumps({'error': 'SQL_CONNECTION_STRING environment variable not set'}),
+                json.dumps({'error': 'Missing SQL configuration: SQL_SERVER, SQL_USER, SQL_PASSWORD, SQL_DATABASE'}),
                 status_code=500,
                 mimetype='application/json'
             )
 
-        conn = pyodbc.connect(conn_str, autocommit=True)
+        conn = pymssql.connect(
+            server=server,
+            user=user,
+            password=password,
+            database=database
+        )
         cursor = conn.cursor()
         cursor.execute('SELECT TOP 50 SchemeID, SchemeName, Regulator FROM dbo.Schemes')
         columns = [column[0] for column in cursor.description]
