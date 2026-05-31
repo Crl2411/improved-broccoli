@@ -154,11 +154,14 @@ function NewMessage() {
   const [data, setData] = useState('');
   
   useEffect(() => {
-    (async function () {
-      const text = await( await fetch(`/api/new_message`)).get_body().text();
+    async function fetchMessage() {
+      const response = await fetch(`/api/new_message`);
+      const text = await response.text();
       setData(text);
-    })();
-  });
+    }
+
+    fetchMessage();
+  }, []);
 
   return (<div>
       <h2>Message from API:</h2>
