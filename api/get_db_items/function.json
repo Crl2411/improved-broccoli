@@ -7,7 +7,7 @@
       "direction": "in",
       "name": "req",
       "methods": ["get"],
-      "route": "items"
+      "route": "get_db_items"
     },
     {
       "type": "http",
