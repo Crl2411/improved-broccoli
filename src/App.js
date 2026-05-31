@@ -107,8 +107,9 @@ const [data, setData] = useState('');
   useEffect(() => {
     async function fetchMessage() {
       const response = await fetch(`/api/health`);
-      const text = await response.json();
-      setData(text);
+      const text = await response.text();
+      const result = JSON.parse(text);
+      setData(result['status']);
     }
 
     fetchMessage();
