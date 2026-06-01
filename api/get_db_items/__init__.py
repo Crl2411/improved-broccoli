@@ -3,7 +3,7 @@ import os
 import traceback
 
 import azure.functions as func
-import pymssql
+import pyodbc
 
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
@@ -20,14 +20,8 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
                 mimetype='application/json'
             )
 
-        conn = pymssql.connect(
-            server=server,
-            port=1433,
-            user=user,
-            password=password,
-            database=database,
-            encrypt=True
-        )
+        connection_string = f'Driver={{ODBC Driver 17 for SQL Server}};Server={server};Database={database};Uid={user};Pwd={password};Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;'
+        conn = pyodbc.connect(connection_string)
         cursor = conn.cursor()
         cursor.execute('SELECT TOP 50 SchemeID, SchemeName, Regulator FROM dbo.Schemes')
         columns = [column[0] for column in cursor.description]
