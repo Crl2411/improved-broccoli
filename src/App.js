@@ -79,8 +79,8 @@ function DatabaseData() {
       <ul>
         {items.length > 0 ? (
           items.map((item) => (
-            <li key={item.id}>
-              <strong>{item.name}</strong>: {item.value}
+            <li key={item.SchemeID}>
+              <strong>{item.SchemeName}</strong>: {item.Regulator}
             </li>
           ))
         ) : (
