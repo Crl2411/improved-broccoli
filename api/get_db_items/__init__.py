@@ -22,9 +22,11 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
 
         conn = pymssql.connect(
             server=server,
+            port=1433,
             user=user,
             password=password,
-            database=database
+            database=database,
+            encrypt=True
         )
         cursor = conn.cursor()
         cursor.execute('SELECT TOP 50 SchemeID, SchemeName, Regulator FROM dbo.Schemes')
