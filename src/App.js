@@ -79,7 +79,7 @@ function DatabaseData() {
     })
       .then((response) => {
         if (!response.ok) {
-          throw new Error(`API request failed: ${response.status} ${response.text()}`);
+          throw new Error(`API request failed with status ${response.status}`);
         }
         return response.json();
       })
