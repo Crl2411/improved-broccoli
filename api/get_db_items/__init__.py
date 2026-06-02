@@ -8,10 +8,18 @@ import pymssql
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
     try:
+        # Get SQL server and database from environment (static config)
         server = os.environ.get('SQL_SERVER')
-        user = os.environ.get('SQL_USER')
-        password = os.environ.get('SQL_PASSWORD')
         database = os.environ.get('SQL_DATABASE')
+        
+        # Get credentials from request body
+        try:
+            req_body = req.get_json()
+            user = req_body.get('username')
+            password = req_body.get('password')
+        except ValueError:
+            user = req.params.get('username')
+            password = req.params.get('password')
 
         if not all([server, user, password, database]):
             return func.HttpResponse(

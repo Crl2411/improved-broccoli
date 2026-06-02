@@ -4,8 +4,6 @@
     "AzureWebJobsStorage": "UseDevelopmentStorage=true",
     "FUNCTIONS_WORKER_RUNTIME": "python",
     "SQL_SERVER": "example-database.database.windows.net",
-    "SQL_USER": "crl2411@hotmail.com",
-    "SQL_PASSWORD": "YOUR_PASSWORD",
     "SQL_DATABASE": "example_database"
   }
 }

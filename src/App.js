@@ -6,49 +6,77 @@ const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const toggleAuth = () => {
-    setIsAuthenticated((prev) => {
-      if (prev) {
-        window.location.href = '/logout';
-        return false;
-      }
-      window.location.href = '/login';
-      return true;
-    });
+  const [credentials, setCredentials] = useState(null);
+  
+  const toggleAuth = (username = '', password = '') => {
+    if (!isAuthenticated) {
+      // Login
+      setCredentials({ username, password });
+      setIsAuthenticated(true);
+    } else {
+      // Logout
+      setCredentials(null);
+      setIsAuthenticated(false);
+    }
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, toggleAuth }}>
+    <AuthContext.Provider value={{ isAuthenticated, toggleAuth, credentials }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-function TextUpdateWhenAuthenticated() {
-  const { isAuthenticated } = useContext(AuthContext);
-  const [inputText, setInputText] = useState('');
-  const [displayText, setDisplayText] = useState('Learn React');
+function FieldUpdateWhenAuthenticated() {
+  const { isAuthenticated, toggleAuth } = useContext(AuthContext);
+  const [userName, setUserName] = useState('');
+  const [password, setPassword] = useState('');
 
   return (
     <div>
-      {isAuthenticated && (
+      {!isAuthenticated && (
         <>
-          <input type="text" value={inputText} onChange={(e) => setInputText(e.target.value)} />
-          <button onClick={() => setDisplayText(inputText)}>Update Text</button>
+          <p>User name:</p><input type="text" value={userName} onChange={(e) => setUserName(e.target.value)} />
+          <p>Password:</p><input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+          <button onClick={() => {
+            toggleAuth(userName, password)
+          }}>Log in</button>
         </>
       )}
-      <p>{displayText}</p>
+      {isAuthenticated && (
+        <>
+        <p>Welcome back, {userName}!</p>
+        <button onClick={() => {
+            toggleAuth()
+            setUserName('')
+            setPassword('')
+          }}>Log out</button>
+        </>
+      )}
     </div>
   );
 }
 
 function DatabaseData() {
+  const { credentials } = useContext(AuthContext);
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch('/api/get_db_items')
+    if (!credentials) {
+      setLoading(false);
+      return;
+    }
+
+    fetch('/api/get_db_items', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        username: credentials.username,
+        password: credentials.password
+      })
+    })
       .then((response) => {
         if (!response.ok) {
           throw new Error(`API request failed: ${response.status} ${response.text()}`);
@@ -63,7 +91,11 @@ function DatabaseData() {
         setError(err.message);
         setLoading(false);
       });
-  }, []);
+  }, [credentials]);
+
+  if (!credentials) {
+    return <p>Please log in to view database items.</p>;
+  }
 
   if (loading) {
     return <p>Loading database items…</p>;
@@ -91,71 +123,14 @@ function DatabaseData() {
   );
 }
 
-function AuthenticationToggle() {
-  const { isAuthenticated, toggleAuth } = useContext(AuthContext);
-  return (
-    <button onClick={toggleAuth}>
-      {isAuthenticated ? 'Logout' : 'Login'}
-    </button>
-  );
-}
-
-function CheckHealth() {
-
-const [data, setData] = useState('');
-  
-  useEffect(() => {
-    async function fetchMessage() {
-      const response = await fetch(`/api/health`);
-      const text = await response.text();
-      const result = JSON.parse(text);
-      setData(result['status']);
-    }
-
-    fetchMessage();
-  }, []);
-
-  return (<div>
-      <h2>Checking API Health:</h2>
-      <p>{data}</p>
-    </div>
-  );
-
-}
-
-
-function NewMessage() {
-  const [data, setData] = useState('');
-  
-  useEffect(() => {
-    async function fetchMessage() {
-      const response = await fetch(`/api/new_message`);
-      const text = await response.text();
-      setData(text);
-    }
-
-    fetchMessage();
-  }, []);
-
-  return (<div>
-      <h2>Message from API:</h2>
-      <p>{data}</p>
-    </div>
-  );
-
-}
-
 function App() {
   return (
     <AuthProvider>
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <TextUpdateWhenAuthenticated />
-          <AuthenticationToggle />
-          <CheckHealth />
+          <FieldUpdateWhenAuthenticated />
           <DatabaseData />
-          <NewMessage />
           <p>
             Edit <code>src/App.js</code> and save to reload.
           </p>
