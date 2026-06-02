@@ -36,11 +36,15 @@ function FieldUpdateWhenAuthenticated() {
     <div>
       {!isAuthenticated && (
         <>
+          <>
           <p>User name:</p><input type="text" value={userName} onChange={(e) => setUserName(e.target.value)} />
           <p>Password:</p><input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+          </>
+          <>
           <button onClick={() => {
             toggleAuth(userName, password)
           }}>Log in</button>
+          </>
         </>
       )}
       {isAuthenticated && (
