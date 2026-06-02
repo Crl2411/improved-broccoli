@@ -66,6 +66,8 @@ function DatabaseData() {
   useEffect(() => {
     if (!credentials) {
       setLoading(false);
+      setError(null);
+      setItems([]);
       return;
     }
 
