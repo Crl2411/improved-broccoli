@@ -36,15 +36,11 @@ function FieldUpdateWhenAuthenticated() {
     <div>
       {!isAuthenticated && (
         <>
-          <>
           <p>User name:</p><input type="text" value={userName} onChange={(e) => setUserName(e.target.value)} />
           <p>Password:</p><input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-          </>
-          <>
           <button onClick={() => {
             toggleAuth(userName, password)
           }}>Log in</button>
-          </>
         </>
       )}
       {isAuthenticated && (
@@ -66,6 +62,11 @@ function DatabaseData() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [schemeID, setSchemeID] = useState('');
+  const [schemeName, setSchemeName] = useState('');
+  const [regulator, setRegulator] = useState('');
+  const [addingItem, setAddingItem] = useState(false);
+  const [addError, setAddError] = useState(null);
 
   useEffect(() => {
     if (!credentials) {
@@ -99,6 +100,42 @@ function DatabaseData() {
       });
   }, [credentials]);
 
+  const handleAddNewItem = async () => {
+    setAddingItem(true);
+    setAddError(null);
+
+    try {
+      const response = await fetch('/api/post_db_items', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username: credentials.username,
+          password: credentials.password,
+          SchemeID: schemeID,
+          SchemeName: schemeName,
+          Regulator: regulator
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error(`API request failed with status ${response.status}`);
+      }
+
+      // Clear form fields
+      setSchemeID('');
+      setSchemeName('');
+      setRegulator('');
+
+      // Refresh the items list
+      const data = await response.json();
+      setItems(data);
+    } catch (err) {
+      setAddError(err.message);
+    } finally {
+      setAddingItem(false);
+    }
+  };
+
   if (!credentials) {
     return <p>Please log in to view database items.</p>;
   }
@@ -125,6 +162,35 @@ function DatabaseData() {
           <li>No items found.</li>
         )}
       </ul>
+
+      <h3>Add New Item</h3>
+      <div>
+        <p>Scheme ID:</p>
+        <input 
+          type="text" 
+          value={schemeID} 
+          onChange={(e) => setSchemeID(e.target.value)}
+          disabled={addingItem}
+        />
+        <p>Scheme Name:</p>
+        <input 
+          type="text" 
+          value={schemeName} 
+          onChange={(e) => setSchemeName(e.target.value)}
+          disabled={addingItem}
+        />
+        <p>Regulator:</p>
+        <input 
+          type="text" 
+          value={regulator} 
+          onChange={(e) => setRegulator(e.target.value)}
+          disabled={addingItem}
+        />
+        <button onClick={handleAddNewItem} disabled={addingItem}>
+          {addingItem ? 'Adding...' : 'Add New Item'}
+        </button>
+        {addError && <p style={{ color: 'red' }}>Error adding item: {addError}</p>}
+      </div>
     </div>
   );
 }
