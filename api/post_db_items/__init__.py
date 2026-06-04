@@ -17,13 +17,11 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
             req_body = req.get_json()
             user = req_body.get('username')
             password = req_body.get('password')
-            SchemeID = req_body.get('SchemeID')
             SchemeName = req_body.get('SchemeName')
             Regulator = req_body.get('Regulator')
         except ValueError:
             user = req.params.get('username')
             password = req.params.get('password')
-            SchemeID = req.params.get('SchemeID')
             SchemeName = req.params.get('SchemeName')
             Regulator = req.params.get('Regulator')
 
@@ -42,7 +40,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
             timeout=30
         )
         cursor = conn.cursor()
-        cursor.execute(f'INSERT INTO dbo.Schemes (SchemeID, SchemeName, Regulator) VALUES ({SchemeID}, {SchemeName}, {Regulator})')
+        cursor.execute(f'INSERT INTO dbo.Schemes (SchemeName, Regulator) VALUES (\'{SchemeName}\', \'{Regulator}\')')
         conn.commit()
         conn.close()
 

@@ -36,8 +36,14 @@ function FieldUpdateWhenAuthenticated() {
     <div>
       {!isAuthenticated && (
         <>
-          <p>User name:</p><input type="text" value={userName} onChange={(e) => setUserName(e.target.value)} />
-          <p>Password:</p><input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+          <div>
+            <p>User name:</p>
+            <input type="text" value={userName} onChange={(e) => setUserName(e.target.value)} />
+          </div>
+          <div>
+            <p>Password:</p>
+            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+          </div>
           <button onClick={() => {
             toggleAuth(userName, password)
           }}>Log in</button>
@@ -165,27 +171,26 @@ function DatabaseData() {
 
       <h3>Add New Item</h3>
       <div>
-        <p>Scheme ID:</p>
-        <input 
-          type="text" 
-          value={schemeID} 
-          onChange={(e) => setSchemeID(e.target.value)}
-          disabled={addingItem}
-        />
-        <p>Scheme Name:</p>
-        <input 
-          type="text" 
-          value={schemeName} 
-          onChange={(e) => setSchemeName(e.target.value)}
-          disabled={addingItem}
-        />
-        <p>Regulator:</p>
-        <input 
-          type="text" 
-          value={regulator} 
-          onChange={(e) => setRegulator(e.target.value)}
-          disabled={addingItem}
-        />
+        <div style={{ display: 'flex', gap: '20px' }}>
+          <div>
+            <p>Scheme Name:</p>
+            <input 
+              type="text" 
+              value={schemeName} 
+              onChange={(e) => setSchemeName(e.target.value)}
+              disabled={addingItem}
+            />
+          </div>
+          <div>
+            <p>Regulator:</p>
+            <input 
+              type="text" 
+              value={regulator} 
+              onChange={(e) => setRegulator(e.target.value)}
+              disabled={addingItem}
+            />
+          </div>
+        </div>
         <button onClick={handleAddNewItem} disabled={addingItem}>
           {addingItem ? 'Adding...' : 'Add New Item'}
         </button>
