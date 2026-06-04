@@ -68,9 +68,10 @@ function DatabaseData() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [schemeID, setSchemeID] = useState('');
+  const [schemeRef, setSchemeRef] = useState('');
   const [schemeName, setSchemeName] = useState('');
   const [regulator, setRegulator] = useState('');
+  const [effDate, setEffDate] = useState('');
   const [addingItem, setAddingItem] = useState(false);
   const [addError, setAddError] = useState(null);
 
@@ -117,9 +118,10 @@ function DatabaseData() {
         body: JSON.stringify({
           username: credentials.username,
           password: credentials.password,
-          SchemeID: schemeID,
           SchemeName: schemeName,
-          Regulator: regulator
+          Regulator: regulator,
+          EffDate: effDate,
+          SchemeRef: schemeRef
         })
       });
 
@@ -128,9 +130,10 @@ function DatabaseData() {
       }
 
       // Clear form fields
-      setSchemeID('');
+      setSchemeRef('');
       setSchemeName('');
       setRegulator('');
+      setEffDate('');
 
       // Refresh the items list
       const data = await response.json();
@@ -187,6 +190,24 @@ function DatabaseData() {
               type="text" 
               value={regulator} 
               onChange={(e) => setRegulator(e.target.value)}
+              disabled={addingItem}
+            />
+          </div>
+          <div>
+            <p>Effective Date:</p>
+            <input 
+              type="date" 
+              value={effDate} 
+              onChange={(e) => setEffDate(e.target.value)}
+              disabled={addingItem}
+            />
+          </div>
+          <div>
+            <p>Scheme Reference:</p>
+            <input 
+              type="text" 
+              value={schemeRef} 
+              onChange={(e) => setSchemeRef(e.target.value)}
               disabled={addingItem}
             />
           </div>

@@ -19,11 +19,15 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
             password = req_body.get('password')
             SchemeName = req_body.get('SchemeName')
             Regulator = req_body.get('Regulator')
+            EffDate = req_body.get('EffDate')
+            SchemeRef = req_body.get('SchemeRef')
         except ValueError:
             user = req.params.get('username')
             password = req.params.get('password')
             SchemeName = req.params.get('SchemeName')
             Regulator = req.params.get('Regulator')
+            EffDate = req.params.get('EffDate')
+            SchemeRef = req.params.get('SchemeRef')
 
         if not all([server, user, password, database]):
             return func.HttpResponse(
@@ -40,7 +44,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
             timeout=30
         )
         cursor = conn.cursor()
-        cursor.execute(f'INSERT INTO dbo.Schemes (SchemeName, Regulator) VALUES (\'{SchemeName}\', \'{Regulator}\')')
+        cursor.execute(f'INSERT INTO dbo.Schemes (SchemeName, Regulator, EffectiveDate, SchemeReference, CreatedDate) VALUES (\'{SchemeName}\', \'{Regulator}\', \'{EffDate}\', \'{SchemeRef}\', GETDATE())')
         conn.commit()
         conn.close()
 
